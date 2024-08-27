@@ -26,7 +26,7 @@ The **QMultiAdapt** repository demonstrates the versatility and applicability of
 ---
 
 ### Citation
-For academic use, please cite our work as mentioned in the related paper *Designing variational ansatz for quantum-enabled simulation of non-unitary dynamical evolution- an excursion into Dicke supperradiance.*
+For academic use, please cite our work as mentioned in the related paper *Designing variational ansatz for quantum-enabled simulation of non-unitary dynamical evolution an excursion into Dicke supperradiance.*
 
 
 Feel free to reach out with any questions, suggestions, or contributions!
