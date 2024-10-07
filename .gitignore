@@ -1,2 +1,4 @@
-*.whl
-*.gz
+# Build artifacts
+/dist/
+/build/
+/*.egg-info
