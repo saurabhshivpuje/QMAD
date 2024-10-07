@@ -1,8 +1,0 @@
-LICENSE
-README.md
-setup.py
-src/QMultiAdapt.egg-info/PKG-INFO
-src/QMultiAdapt.egg-info/SOURCES.txt
-src/QMultiAdapt.egg-info/dependency_links.txt
-src/QMultiAdapt.egg-info/requires.txt
-src/QMultiAdapt.egg-info/top_level.txt
