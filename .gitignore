@@ -1,4 +1,4 @@
 # Build artifacts
 /dist/
 /build/
-/*.egg-info
+/src/*.egg-info
