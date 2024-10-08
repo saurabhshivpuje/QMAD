@@ -4,8 +4,8 @@ from scipy.linalg import expm, kron
 from numpy.random import rand
 random_numbers = np.random.uniform(low=10000, high=99999)
 np.random.seed(int(random_numbers))
-from ansatz import *
-
+from .ansatz import *
+from .ansatzVect import *
 
 # Helper Functions for evolution
 # def tag(A):
@@ -202,7 +202,7 @@ def one_step(A, He, Ha, dt):
     update_state(A)
 
 
-def solve_avq(H, A, tspan, dt, save_state=True, save_everystep=True):
+def solve_avq_traj(H, A, tspan, dt, save_state=True, save_everystep=True):
     # Store initial reference state for reinitialization
     ref_init = A.ref.copy()
     update_state(A)
@@ -323,7 +323,7 @@ def solve_avq(H, A, tspan, dt, save_state=True, save_everystep=True):
 # Function to evolve a single trajectory and collect results
 def solve_avq_trajectory(H, ansatz, tf, dt):
     # Solve for a single trajectory using solve_avq
-    res = solve_avq(H, ansatz, [0, tf], dt, save_state=True, save_everystep=True)
+    res = solve_avq_traj(H, ansatz, [0, tf], dt, save_state=True, save_everystep=True)
     
     # Post-process the results to extract energy and populations
     # print("time:",res.t)
@@ -341,3 +341,32 @@ def solve_avq_trajectory(H, ansatz, tf, dt):
 
     return Result(tlist, psi_list, energy, pop, res.θ, res.A, res.jump_t, res.jump_L, res.status)
     pass
+
+def solve_avq_vect(H, A, tspan, dt):
+    ref_init = A.ref.copy()
+    nqbit = A.nqbit
+    update_state(A)
+    t = tspan[0]
+    t_list = [t]
+    u_list = [A.state.reshape(2**nqbit, 2**nqbit)]
+    theta_list = [A.theta.copy()]
+    A_list = [[tag(a) for a in A.A]]
+    norm_list = [1.0]
+    Γ = 0
+    while t + dt <= tspan[1]:
+        He = H.He
+        Ha = H.Ha
+        one_step(A, He, Ha, dt)
+        psi_ = A.state
+        Γ += 2 * np.real(psi_.T.conj() @ Ha @ psi_) * dt
+        ρ = psi_.reshape(2**nqbit, 2**nqbit)
+        ρ /= np.trace(ρ)
+        t += dt
+        t_list.append(t)
+        u_list.append(ρ)
+        theta_list.append(A.theta.copy())
+        A_list.append([tag(a) for a in A.A])
+        norm_list.append(np.exp(-Γ))
+    set_ref(A, ref_init)
+    reset(A)
+    return AVQDSol(t_list, u_list, theta_list, A_list, [], [], norm=norm_list)

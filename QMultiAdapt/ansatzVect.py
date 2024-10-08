@@ -3,7 +3,6 @@ from itertools import combinations, product
 from scipy.linalg import expm, kron
 
 # Ansatz Class and Operators
-
 class Ansatz_class:
     def __init__(self, nqbit, u0, relrcut, pool, theta=[], ansatz=[]):
         self.theta = np.array(theta)
@@ -44,13 +43,11 @@ def PauliOperator(ops, idx, w, nqbit):
 sx = np.array([[0, 1], [1, 0]])
 sy = np.array([[0, -1j], [1j, 0]])
 sz = np.array([[1, 0], [0, -1]])
-# S = np.array([[1, 0], [0, 1j]])
-
 
 def build_pool(nqbit):
     pauliStr = ["sx", "sz", "sy"]
     res = []
-    for order in range(1, nqbit+1):
+    for order in range(1, 3):
         for idx in combinations(range(1, nqbit + 1), order):
             for op in product(pauliStr, repeat=order):
                 res.append(PauliOperator(op, list(idx), 1, nqbit))
@@ -58,7 +55,7 @@ def build_pool(nqbit):
 
 def Ansatz(u0, relrcut, theta=[], ansatz=[]):
     nqbit = int(np.log2(len(u0)))
-    pool_qubit =  nqbit
-    # u0 = np.outer(u0, u0).flatten()
+    pool_qubit = 2 * nqbit
+    u0 = np.outer(u0, u0).flatten()
     pool = build_pool(pool_qubit)
     return Ansatz_class(nqbit, u0, relrcut, pool, theta, ansatz)

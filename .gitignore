@@ -1,4 +1,4 @@
 # Build artifacts
 /dist/
 /build/
-/QMultiAdapt/*.egg-info
+/*.egg-info
