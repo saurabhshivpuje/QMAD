@@ -42,10 +42,7 @@ class EffectiveHamiltonian_class:
 def EffectiveHamiltonian( mats, Llist):
     """
     Create an EffectiveHamiltonian object based on provided parameters.
-
-    :param funcs: List of time-dependent functions for the Hamiltonian.
     :param mats: List of matrices (Hamiltonian terms).
-    :param γlist: List of coefficients for each Lindblad operator set.
     :param Llist: List of lists of Lindblad operators.
     :return: An instance of EffectiveHamiltonian_class.
     """
@@ -54,14 +51,12 @@ def EffectiveHamiltonian( mats, Llist):
     Ha = 0.0  # Initialize anti-Hermitian part
     LdL = []  # Initialize the list for Lindblad operator products
 
-    # Combine γ and Lindblad operators (L * L')
     for  LL in Llist:
         for L in LL:
-            # print("L in effh:",np.shape(L))
-            L_dagger_L = (L.conj().T @ L)  # Compute γ * L†L
+            L_dagger_L = (L.conj().T @ L) 
+            
             LdL.append(L_dagger_L)  # Append to LdL list
             Ha += L_dagger_L  # Sum for the anti-Hermitian part
-            # print(Ha)
 
     # Return the Effective Hamiltonian object
     return EffectiveHamiltonian_class(He, 0.5 * Ha, [L for LL in Llist for L in LL], LdL)

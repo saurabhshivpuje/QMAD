@@ -218,9 +218,9 @@ def solve_avq_traj(H, A, tspan, dt, save_state=True, save_everystep=True):
 
     # Break flag for error handling
     break_flag = False
-    Γ = 0  # Jump recorder
+    Gamma = 0  # Jump recorder
     q = rand()  # Random number for quantum jump
-    # print("expo:",np.exp(-Γ))
+    # print("expo:",np.exp(-Gamma))
     # print("random q:", q)
 
     if save_everystep:
@@ -232,79 +232,66 @@ def solve_avq_traj(H, A, tspan, dt, save_state=True, save_everystep=True):
             u_list.append(A.state.copy())
 
     # Main evolution loop
-    while t + dt <= tspan[1]:
-        print("timestep:",dt)
-        He = H.He
-        # He=np.zeros((32,32))
-        # print("Hermitian ham:",np.shape(He))
-        Ha = H.Ha
-        # Ha=np.zeros((32,32))
+    # This loop performs the simulation of quantum system evolution over a set time span.
+    # It integrates the system state forward in time while handling both deterministic 
+    # evolution and stochastic quantum jumps.
 
-        # print("antihermitian ham:",np.shape(Ha))
-        # stop
-        # Perform the time evolution if no quantum jump is needed
-        # print("random number:",q)
-        if np.exp(-Γ) > q:
-            # print("here not in jump")
+    while t + dt <= tspan[1]:  # Loop over the total time span with step size dt
+        print("timestep:", dt)  # Print current time step size for monitoring
+        He = H.He  # Extract Hermitian Hamiltonian component for deterministic evolution
+        Ha = H.Ha  # Extract Antihermitian Hamiltonian component for jump handling
+
+        if np.exp(-Gamma) > q:  # Check if no quantum jump occurs, based on jump probability threshold
             try:
-                # print("here0",A)
-                one_step(A, He, Ha, dt)
-                # print("here")
-            except Exception:
+                one_step(A, He, Ha, dt)  # Perform deterministic evolution for one time step
+            except Exception:  # In case of failure, exit the loop with a flag
                 break_flag = True
                 break
-            psi_ = A.state
-            # print("psi_Tconj",np.shape(psi_.T.conj()))
-            # print("Ha",np.shape(Ha))
-            # print("psi_",np.shape(psi_))
-            # stop
-            Γ += 2 * np.real(psi_.T.conj() @ Ha @ psi_) * dt
-            # print("new gamma:",Γ)
+            psi_ = A.state  # Update the current state of the system
+            Gamma += 2 * np.real(psi_.T.conj() @ Ha @ psi_) * dt  # Update accumulated Gamma for jump probability
 
-            if save_everystep:
-                t_list.append(t + dt)
-                # print("tlist append:",t_list)
-                theta_list.append(A.theta.copy())
-                A_list.append([tag(a) for a in A.A])
+            if save_everystep:  # Option to save state at every time step
+                t_list.append(t + dt)  # Save current time
+                theta_list.append(A.theta.copy())  # Save current ansatz parameters
+                A_list.append([tag(a) for a in A.A])  # Save current state of ansatz components
 
-        else:
-            # Apply quantum jump
-            # print("JUMPPPP!")
-            psi_ = A.state
+        else:  # Quantum jump occurs
+            psi_ = A.state  # Get current state before jump
 
+            # Compute the probabilities for different jump operators
             weights = np.array([np.real(psi_.T.conj() @ LdL @ psi_) for LdL in H.LdL])
-            # print("llist shpae",type(H.Llist))
-            # print("lsiting",np.shape([matrix for matrix in H.Llist]))
-            # L_index = np.random.choice([i for i in range (0,np.shape(H.Llist)[0])], p=weights/weights.sum())#!!!!!!!!!!!]
-            # print("Lindex:", L_index)
-            L_index=np.random.choice([i for i in range (0,np.shape(H.Llist)[0])],p=weights/weights.sum())
-            L=H.Llist[L_index]
-            # print("Lindex:",L_index)
-            # print("here")
-            # stop
-            # print("shape:",np.shape(L))
+
+            # Randomly choose a jump operator based on computed probabilities
+            L_index = np.random.choice([i for i in range(np.shape(H.Llist)[0])], p=weights/weights.sum())
+            L = H.Llist[L_index]  # Select corresponding jump operator
+
+            # Apply the jump operator to the state and normalize it
             psi_n = L @ psi_ / np.linalg.norm(L @ psi_)
 
-            # Record jump information
+            # Record the jump event details (time and operator used)
             jump_t_list.append(t)
             jump_L_list.append(tag(L))
 
+            # Record the state and parameters post-jump
             t_list.append(t + dt)
-            set_ref(A, psi_n)
-            reset(A)
+            set_ref(A, psi_n)  # Update the state with post-jump state
+            reset(A)  # Reset the ansatz parameters after jump
 
-            # Record ansatz parameters post-jump
+            # Save updated ansatz parameters post-jump
             theta_list.append(A.theta.copy())
             A_list.append([tag(a) for a in A.A])
 
-            # Reset jump recorder
-            Γ = 0
-            q = rand()
+            # Reset the jump probability accumulator
+            Gamma = 0
+            q = rand()  # Generate a new random number for the next jump check
 
-        # Save state and increment time
+        # Optionally save the state at each time step
         if save_state:
-            u_list.append(A.state.copy())
+            u_list.append(A.state.copy())  # Store the current state
+
+        # Increment the simulation time by dt
         t += dt
+
 
     # Final check for status if no errors occurred
     if not break_flag:
@@ -326,7 +313,6 @@ def solve_avq_trajectory(H, ansatz, tf, dt):
     res = solve_avq_traj(H, ansatz, [0, tf], dt, save_state=True, save_everystep=True)
     
     # Post-process the results to extract energy and populations
-    # print("time:",res.t)
     tlist = res.t
     psi_list = res.u
     energy = []
@@ -335,9 +321,7 @@ def solve_avq_trajectory(H, ansatz, tf, dt):
     for i in range(len(tlist)):
         psi = psi_list[i]
         energy.append(np.real(np.conj(psi.T) @ (H.He) @ psi))  # Energy
-        # print("pop1:",pop)
         pop.append([np.abs(psi[0])**2, np.abs(psi[1])**2])  # Population in ground/excited states for amplitude damping
-        # print("pop2:",pop)
 
     return Result(tlist, psi_list, energy, pop, res.θ, res.A, res.jump_t, res.jump_L, res.status)
     pass
@@ -352,13 +336,13 @@ def solve_avq_vect(H, A, tspan, dt):
     theta_list = [A.theta.copy()]
     A_list = [[tag(a) for a in A.A]]
     norm_list = [1.0]
-    Γ = 0
+    Gamma = 0
     while t + dt <= tspan[1]:
         He = H.He
         Ha = H.Ha
         one_step(A, He, Ha, dt)
         psi_ = A.state
-        Γ += 2 * np.real(psi_.T.conj() @ Ha @ psi_) * dt
+        Gamma += 2 * np.real(psi_.T.conj() @ Ha @ psi_) * dt
         ρ = psi_.reshape(2**nqbit, 2**nqbit)
         ρ /= np.trace(ρ)
         t += dt
@@ -366,7 +350,7 @@ def solve_avq_vect(H, A, tspan, dt):
         u_list.append(ρ)
         theta_list.append(A.theta.copy())
         A_list.append([tag(a) for a in A.A])
-        norm_list.append(np.exp(-Γ))
+        norm_list.append(np.exp(-Gamma))
     set_ref(A, ref_init)
     reset(A)
     return AVQDSol(t_list, u_list, theta_list, A_list, [], [], norm=norm_list)
