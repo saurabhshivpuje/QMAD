@@ -47,7 +47,7 @@ sz = np.array([[1, 0], [0, -1]])
 def build_pool(nqbit):
     pauliStr = ["sx", "sz", "sy"]
     res = []
-    for order in range(1, 3):
+    for order in range(1, nqbit+1):
         for idx in combinations(range(1, nqbit + 1), order):
             for op in product(pauliStr, repeat=order):
                 res.append(PauliOperator(op, list(idx), 1, nqbit))
