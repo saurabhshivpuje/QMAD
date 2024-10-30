@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="qmad",              # Name of your package
-    version="1.0.1",                    # Version of your package
+    version="1.0.2",                    # Version of your package
     description="A package for adaptive variational quantum computing algorithms",
     long_description=open('README.md').read(),  # Long description from README
     long_description_content_type='text/markdown',  # Description format
