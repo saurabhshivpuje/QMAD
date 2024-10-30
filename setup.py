@@ -2,12 +2,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="QMultiAdapt",              # Name of your package
-    version="2.0.0",                    # Version of your package
+    name="qmad",              # Name of your package
+    version="1.0.0",                    # Version of your package
     description="A package for adaptive variational quantum computing algorithms",
     long_description=open('README.md').read(),  # Long description from README
     long_description_content_type='text/markdown',  # Description format
-    url="https://github.com/saurabhshivpuje/QMultiAdapt",  # Project's homepage
+    url="https://github.com/saurabhshivpuje/QMAD",  # Project's homepage
     author="Saurabh Shivpuje",
     author_email="saushivpuje@gmail.com",
     license="MIT",                    # License for your package
