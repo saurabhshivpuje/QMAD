@@ -237,7 +237,7 @@ def solve_avq_traj(H, A, tspan, dt, save_state=True, save_everystep=True):
     # evolution and stochastic quantum jumps.
 
     while t + dt <= tspan[1]:  # Loop over the total time span with step size dt
-        print("timestep:", dt)  # Print current time step size for monitoring
+        # print("timestep:", dt)  # Print current time step size for monitoring
         He = H.He  # Extract Hermitian Hamiltonian component for deterministic evolution
         Ha = H.Ha  # Extract Antihermitian Hamiltonian component for jump handling
 
