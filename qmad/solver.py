@@ -151,7 +151,7 @@ def one_step(A, He, Ha, dt):
     Vtmp = V
     dthetatmp = dtheta
     opTmp = None
-    dpsi__aTmp = None
+    dpsi_aTmp = None
     add_flag = True
 
     while add_flag:
@@ -164,11 +164,11 @@ def one_step(A, He, Ha, dt):
                 # print("here in get newest_A")
                 continue
             # print("here in op for loop")
-            dpsi__a = -0.5j * lmul(op, psi_)
+            dpsi_a = -0.5j * lmul(op, psi_)
 
-            Mop = update_m(M, dpsi__a, psi_, dpsi_)
+            Mop = update_m(M, dpsi_a, psi_, dpsi_)
             # print("Mop:",Mop)
-            Vop = update_v(V, dpsi__a, psi_, He, Ha)
+            Vop = update_v(V, dpsi_a, psi_, He, Ha)
             dthetaop, vmvOp = lin_solve(Mop, Vop)
             # print("berfore the if:","vmvOp:",vmvOp, "vmvMax:",vmvMax)
 
@@ -182,7 +182,7 @@ def one_step(A, He, Ha, dt):
                 opTmp = op
                 tagTmp = tag(op)
                 # print("tagTmp:",tagTmp)
-                dpsi__aTmp = dpsi__a
+                dpsi_aTmp = dpsi_a
         # print("vmvMax - vmv:",vmvMax-vmv)
         add_flag = vmvMax - vmv >= relrcut
 
@@ -195,7 +195,7 @@ def one_step(A, He, Ha, dt):
             M = Mtmp
             V = Vtmp
             dtheta = dthetatmp
-            dpsi_.append(dpsi__aTmp)
+            dpsi_.append(dpsi_aTmp)
 
     update_theta(A, dtheta, dt)
     # print("Ansatz:",A.theta)
