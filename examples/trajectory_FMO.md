@@ -213,7 +213,7 @@ After each detected jump, we (i) reset the ansatz reference to the post‑jump s
 
 ## References & Links
 
-* Y. Endo *et al.*, *Variational quantum simulation of open quantum systems*, PRX Quantum **1**, 010306 (2020).
 * Y. Chen *et al.*, *Adaptive variational quantum dynamics for open systems* (2024).
+* Shivpuje et al., Designing Variational Ansatz for Quantum-Enabled Simulation of Non-Unitary Dynamical Evolution — An Excursion into Dicke Superradiance, Adv. Quantum Technol. (2024), https://doi.org/10.1002/qute.202400088
 
 * **Code:** QMAD repository: `qmad/solver.py`, `qmad/effh.py`, example notebooks: `examples/trajectory_FMO*.ipynb`.

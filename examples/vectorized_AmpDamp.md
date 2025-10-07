@@ -115,7 +115,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![UAVQDS\_Populations](../images/Part_I/ampdamp_uavqds.png)
+![UAVQDS\_Populations](ampdamp_vect.png)
 
 ---
 
@@ -158,7 +158,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![QuTiP\_Populations](../images/Part_I/ampdamp_qutip.png)
+![QuTiP\_Populations](qutip_ampdamp.png)
 
 ---
 
@@ -186,7 +186,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-![AmpDamp\_Comparison](../images/Part_I/ampdamp_comparison.png)
+![AmpDamp\_Comparison](ampdamp_comparison.png)
 
 
 ---
@@ -194,3 +194,4 @@ plt.show()
 ## 12. References
 
 * Chen *et al.*, *Adaptive Variational Quantum Dynamics for Open Systems* (2024).
+* Shivpuje et al., Designing Variational Ansatz for Quantum-Enabled Simulation of Non-Unitary Dynamical Evolution — An Excursion into Dicke Superradiance, Adv. Quantum Technol. (2024), https://doi.org/10.1002/qute.202400088
