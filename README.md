@@ -1,4 +1,4 @@
-# QMultiAdapt (Undergoing Morphing for Improved Usability)
+# QMAD/QMultiAdapt
 
 Welcome to the **QMultiAdapt** repository! This repository is currently undergoing a significant transformation to enhance the usability and execution of adaptive variational techniques. Our goal is to make the code more accessible and seamlessly executable for users. As part of this ongoing morphing process, we will be appending more adaptive variational techniques and offering further optimizations to improve the overall user experience.
 
