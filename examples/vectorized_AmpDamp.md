@@ -15,8 +15,6 @@ This section demonstrates the **unrestricted adaptive variational quantum dynami
 
 ---
 
-## 2. Importing Libraries and Defining Operators
-
 We first import the required modules from the QMAD package and standard Python libraries.
 
 ```python
@@ -39,7 +37,6 @@ Id = np.eye(2, dtype=np.complex128)
 
 ---
 
-## 3. Setting Simulation Parameters
 
 We now define simulation parameters such as total time (`tf`), time step (`dt`), and damping rate (`gamma`). These match typical amplitude damping timescales for a single qubit.
 
@@ -57,7 +54,7 @@ H_base = np.eye(2, dtype=np.complex128)
 
 ---
 
-## 4. Constructing the Vectorized Effective Hamiltonian
+## Constructing the Vectorized Effective Hamiltonian
 
 The vectorized formalism rewrites the Lindblad master equation as a linear equation acting on a vectorized density matrix. The function below constructs the corresponding **effective Hamiltonian** used in the variational evolution.
 
@@ -69,7 +66,6 @@ This automatically builds the dissipative superoperator terms associated with th
 
 ---
 
-## 5. Initial State and Ansatz Setup
 
 We initialize the quantum state and define an **unrestricted adaptive ansatz**. The ansatz adjusts its depth automatically based on the residual norm computed during evolution.
 
@@ -83,7 +79,7 @@ The `relrcut` parameter determines the sensitivity of adaptive growth: smaller v
 
 ---
 
-## 6. Running the UAVQDS Simulation
+## Running the UAVQDS Simulation
 
 We now evolve the system using the adaptive variational solver `solve_avq_vect`. The function returns time steps and density matrices over the full trajectory.
 
@@ -101,25 +97,7 @@ times   = np.arange(0, tf + 1e-30, dt)
 
 ---
 
-## 7. Visualizing UAVQDS Populations
-
-We can now plot the populations of the ground and excited states as functions of time.
-
-```python
-plt.plot(times*1e12, ground,  label='Ground (UAVQDS)')
-plt.plot(times*1e12, excited, label='Excited (UAVQDS)')
-plt.xlabel('Time (ps)')
-plt.ylabel('Population')
-plt.legend()
-plt.tight_layout()
-plt.show()
-```
-
-![UAVQDS\_Populations](ampdamp_vect.png)
-
----
-
-## 8. Reference Calculation using QuTiP
+## Reference Calculation using QuTiP
 
 To validate the UAVQDS results, we compute a reference solution using **QuTiP’s master equation solver (`mesolve`)**.
 
@@ -162,7 +140,7 @@ plt.show()
 
 ---
 
-## 9. Combined Comparison Plot
+## Combined Comparison Plot
 
 Overlay UAVQDS and QuTiP population curves for a unified view.
 
@@ -191,7 +169,7 @@ plt.show()
 
 ---
 
-## 12. References
+## References
 
 * Chen *et al.*, *Adaptive Variational Quantum Dynamics for Open Systems* (2024).
 * Shivpuje et al., Designing Variational Ansatz for Quantum-Enabled Simulation of Non-Unitary Dynamical Evolution — An Excursion into Dicke Superradiance, Adv. Quantum Technol. (2024), https://doi.org/10.1002/qute.202400088
